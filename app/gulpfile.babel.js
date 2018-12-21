@@ -7,10 +7,12 @@ import rename from 'gulp-rename';
 import sass from 'gulp-sass';
 
 import del from 'del';
-import exists from 'path-exists';
 import merge from 'merge';
-import moment from 'moment';
 import path from 'path';
+import exists from 'path-exists';
+
+import { replaceExt, error } from './utils.js';
+import { build_base_args, build_public_args, build_private_args } from './pandoc_args.js';
 
 const browserSync = require('browser-sync').create(),
       bourbon     = require('bourbon').includePaths,
@@ -31,33 +33,9 @@ var paths = {
     output: '../output/'
 };
 
-const replaceExt = function (fullPath, newExt) {
-    newExt = newExt[0] == '.' ? newExt : '.' + newExt;
-    var parsed = path.parse(fullPath);
-    var newFullPath = path.join(parsed.root, parsed.dir, parsed.name + newExt);
-    return newFullPath;
-}
-
-const error = function (msg) {
-    var err = new Error(msg);
-    err.showStack = false;
-    return err;
-}
-
-function __include_block_html(filename, args, optionName){
-    if (exists.sync(path.join(paths.source, filename)))
-        args.push('--' + optionName + '=' + replaceExt(path.join(paths.build, filename), '.html'));
-}
-
-const baseArgs = ['--standalone', '--section-divs', '--template=' + paths.template,
-'--css=css/style.css', '--css=css/font-awesome.css', '--variable=date:' + moment().locale(variables.locale).format('LL')];
-const publicArgs = baseArgs.slice(0);
-const privateArgs = baseArgs.slice(0);
-privateArgs.push('--variable=privatecv');
-__include_block_html('before-body-public.md', publicArgs, 'include-before-body');
-__include_block_html('after-body-public.md', publicArgs, 'include-after-body');
-__include_block_html('before-body-private.md', privateArgs, 'include-before-body');
-__include_block_html('after-body-private.md', privateArgs, 'include-after-body');
+const pandoc_base_args = build_base_args(paths, variables);
+const pandoc_public_args = build_public_args(paths, pandoc_base_args);
+const pandoc_private_args = build_public_args(paths, pandoc_base_args);
 
 function __pandoc(filepath, args, dest, renameFunc) {
     var opts = {
@@ -125,8 +103,8 @@ function build_blocks() {
   return merge(beforePublic, beforePrivate, afterPublic, afterPrivate);
 };
 
-function html_public() { return __build_html('public.html', publicArgs)};
-function html_private() { return __build_html('private.html', privateArgs)};
+function html_public() { return __build_html('public.html', pandoc_public_args)};
+function html_private() { return __build_html('private.html', pandoc_private_args)};
 
 function watch() {
     gulp.watch("*.html").on('change', browserSync.reload);
@@ -144,21 +122,17 @@ function connect() {
 }
 
 function check_source(done) {
-    done(exists.sync(paths.source) ? null : error("'" + paths.source + '" not found, did you run the "docker-compose run node make-scaffolds" yet?'));
+    done(exists.sync(paths.source) ? null : error("'" + paths.source + '" not found, did you run the "docker-compose run node make_scaffolds" yet?'));
 }
 
-const html = series(check_source, parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private));
+const html = series(parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private));
+
+const make_scaffolds = series(scaffolds);
+const make_html = series(clean, check_source, html);
 const start = series(clean, check_source, parallel(html, watch, connect));
 
 export { start as default,
-         start,
          clean,
-         scaffolds,
-         html,
-         build_blocks,
-         scss,
-         copy_assets,
-         copy_images,
-         html_public,
-         html_private
+         make_scaffolds,
+         make_html
        };
