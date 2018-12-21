@@ -1,0 +1,78 @@
+html {
+    background-color: $background-color;
+    box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-size: $base-font-size;
+    line-height: $base-line-height; 
+}
+ul,
+ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+dl {
+    margin: 0;
+}
+dt {
+    font-weight: 600;
+    margin: 0;
+}
+dd {
+    margin: 0;
+}
+table {
+    border-collapse: collapse;
+    margin: $base-spacing 0;
+    table-layout: fixed;
+    text-align: left;
+    width: 100%;
+}
+thead {
+    line-height: $base-line-height * $h2-line-multiple;
+    vertical-align: bottom;
+}
+tbody {
+    vertical-align: top;
+}
+tr {
+    border-bottom: 1px solid $border-color;
+}
+h1 {
+    font-size: $h1-font-size;
+    line-height: $base-line-height * $h1-line-multiple;
+    font-weight: normal;
+    margin: 0;
+}
+h2 {
+    font-size: $h2-font-size;
+    line-height: $base-line-height * $h2-line-multiple;
+    font-weight: normal;
+    margin: 0;
+}
+h3 {
+    font-size: $h3-font-size;
+    line-height: $base-line-height * $h3-line-multiple;
+    font-weight: normal;
+    margin: 0;
+}
+p {
+    margin: 0 0 $small-spacing;
+}
+strong { 
+    font-weight: 800;
+}
+em { 
+    font-style: italic;
+}

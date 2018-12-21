@@ -1,0 +1,288 @@
+@import "bourbon";
+@import "neat";
+
+@import "font-awesome/variables";
+
+@import "settings";
+@import "base";
+@import "layouts";
+@import "icons";
+
+body {
+  height: auto;
+  min-height: 100%;
+  max-width: 59em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2em 0;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Kreon|PT+Sans:400,400i,700|PT+Serif:400,400i');
+
+body { font-family: 'PT Sans', sans-serif;}
+
+h1, h2, h3, h4, h5, h6 {  font-family: 'PT Serif', serif; }
+
+dt { font-family: 'Kreon', serif; font-variant: small-caps; margin-top: 10px; font-weight: normal; }
+dd { margin-top: 9px; text-align: justify; }
+
+table { font-size: 80%; table-layout: auto; }
+th { font-style: italic; border-bottom: 1px solid black; padding: 0.1em 0.5em; }
+td { padding: 0.1em 0.5em; }
+
+a { 
+    text-decoration: $link-text-decoration;
+    color: $link-color;
+    white-space: nowrap;
+    
+    &:hover {
+      color: shade($action-color, 45%);
+    }
+
+    // default behavior
+    &[href^="http"] { @extend %external-link-icon; }
+    &[href^="mailto:"] { @extend %email-icon; }
+    &.homepage { @extend %homepage-icon; }
+    &.resume { @extend %resume-icon; }
+    &.phone { @extend %phone-icon; }
+    &.fax { @extend %fax-icon; }
+
+    // overriding
+    &.social { &:before{ content: "" attr(data-network) "# "; } }
+    &.twitter, &[href*='twitter.com'] { @extend %twitter-icon; }
+    &.github, &[href*='github.com'] { @extend %github-icon; }
+    &.gitlab, &[href*='gitlab.com'] { @extend %gitlab-icon; }
+    &.linkedin, &[href*='linkedin.com'] { @extend %linkedin-icon; }
+}
+
+li {  
+    &.birthday { @extend %birthday-icon; }
+    &.address { @extend %address-icon; }
+}
+
+header {
+  text-align: center;
+  @include grid-container;
+
+  img#picture {
+    max-width: $picture-width !important;
+
+    @include grid-media($neat-grid-md){
+      @include grid-column(2);     
+    }
+  }
+  
+  div#header {  
+    @include grid-column(12);
+
+    @include grid-media($neat-grid-md){      
+      text-align: left;  
+    }
+
+    div.header-collapse {
+      @include grid-collapse;
+      @include grid-container;
+      margin-bottom: 0.4em;  
+    }
+     
+    div#title {
+      @include grid-media($neat-grid-md){
+        @include grid-column(8 of 12);     
+      }
+  
+      h1 {    
+        span[itemprop="givenName"] { color: $firstname-color; }
+        span[itemprop="familyName"] { color: $familyname-color; text-transform: uppercase; }
+      }
+  
+      h2 {    
+        font-style: italic;
+        color: $title-color;
+      }
+    }
+       
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+  
+    img#qrcode {
+      max-width: $qrcode-width !important;
+      border: 1px dashed #000;
+      
+      @include grid-media($neat-grid-md){
+        float: right;
+        margin-right: $gutter-size;      
+      }
+    }
+  
+    ul.details {
+      @include grid-column(12);
+  
+      @include grid-media($neat-grid-md){
+        @include grid-column(6 of 12);
+      }
+    }
+  
+    ul.contacts {
+      @include grid-column(12);
+  
+      @include grid-media($neat-grid-md){
+        @include grid-column(6 of 12);
+      }      
+    }
+  
+    &.with-picture {
+      @include grid-media($neat-grid-md){      
+        @include grid-column(10 of 12);
+      }
+    }
+
+  }
+}
+
+main {
+  @include grid-container;
+
+  & > section {
+    @include grid-column(12);
+  }
+
+  section {
+    @include grid-container;
+      
+    > h1 {
+      color: $section-title-color;
+      margin-top: $small-spacing;
+            
+      @include grid-media($neat-grid-sm){
+        &:before {
+          content: "";
+          display: inline-block;
+          width: calc(#{_neat-column-width($neat-grid, 2)} - #{$gutter-size});
+          height: $h2-line-multiple/4 * $h1-font-size;
+          margin-right: $gutter-size/2;
+          margin-bottom: $h2-line-multiple/6 * $h1-font-size;
+          background-color: $section-rectangle-color;
+        }
+      }
+    }
+
+    > h2 {
+      color: $section-title-color;
+      margin-top: $small-spacing;
+            
+      @include grid-media($neat-grid-sm){
+        &:before {
+          content: "";
+          display: inline-block;
+          width: calc(#{_neat-column-width($neat-grid, 2)} + #{$gutter-size/3});
+          height: $h2-line-multiple/4 * $h2-font-size;
+          margin-right: $gutter-size/2;
+          margin-bottom: $h2-line-multiple/6 * $h2-font-size;
+          background-color: $section-rectangle-color;
+        }
+      }
+    }
+
+    > h3 {
+      margin-top: $small-spacing;    
+
+      @include grid-media($neat-grid-sm){
+        &:before {
+          content: "";
+          display: inline-block;
+          width: calc(#{_neat-column-width($neat-grid, 2)} + #{$gutter-size/3});
+          height: $h2-line-multiple/4 * $h3-font-size;
+          margin-right: $gutter-size/2;
+          margin-bottom: $h2-line-multiple/6 * $h3-font-size;
+          background-color: $section-rectangle-color;
+        }
+      }
+    }
+  
+    dl {
+      @include grid-container;
+      @include grid-collapse;
+      
+      dt {
+        @include grid-column(12 of 12);
+        
+        @include grid-media($neat-grid-md){
+          @include grid-column(2 of 12);
+          text-align: right;     
+        }
+
+        clear: both;
+      }
+
+      dd {
+        @include grid-column(11 of 12);
+        @include grid-push(1);
+        
+        @include grid-media($neat-grid-md){
+          @include grid-column(10 of 12);        
+        }   
+      }
+
+      dd + dd {      
+        @include grid-media($neat-grid-md){
+          @include grid-push(2);      
+        }   
+      } 
+
+    }
+
+  }
+
+  div#esami-sostenuti {
+      @include grid-container;   
+      @include grid-collapse;
+
+      table {
+        @include grid-column(12 of 12);
+
+        @include grid-media($neat-grid-md){
+          @include grid-column(6 of 12);
+        } 
+     }
+
+  }
+}
+
+footer {
+  @include grid-container; 
+  
+  margin-top: 2em;
+
+  p {
+    text-align: center;
+    font-size: 90%;
+  }
+
+}
+
+@media print, projection {
+
+  @page {
+      /* always print with A4 */
+      size: portrait;
+      size: 210mm 297mm;
+
+      /* this affects the margin in the printer settings */
+      margin: 1.0cm 1.5cm 0.5cm 1.5cm;
+      padding: 0;
+
+  }
+
+  // layout
+  body { min-width: $lg-layout-min; padding: 0; } // in order to have a decent rendering
+
+  // page break  
+  h2, h3 { page-break-after: avoid; }
+  dt { page-break-after: avoid !important; }
+  dd, p { page-break-before: avoid !important;; }
+  dl, dt, dd, p { orphans: 3; widows: 3; }
+  dt, dd, p { page-break-inside: avoid !important; }
+  .page-breaker { page-break-before: always; }
+}

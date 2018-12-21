@@ -1,0 +1,32 @@
+%icon {
+    width: (18em / 14);
+    text-align: center;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-right: 5px;
+  }
+
+// misc icons
+%external-link-icon:before { @extend %icon; content: $external-link-icon !important; }
+
+// details icons
+%birthday-icon:before { @extend %icon; content: $birthday-icon !important; }
+%address-icon:before { @extend %icon; content: $address-icon !important; }
+  
+// contacts icons
+%homepage-icon:before { @extend %icon; content: $homepage-icon !important; }
+%resume-icon:before { @extend %icon; content: $resume-icon !important; }
+%email-icon:before { @extend %icon; content: $email-icon !important; }
+%phone-icon:before { @extend %icon; content: $phone-icon !important; }
+%fax-icon:before { @extend %icon; content: $fax-icon !important; }
+
+// social icons
+%twitter-icon:before { @extend %icon; content: $fa-var-twitter !important; }
+%github-icon:before { @extend %icon; content: $fa-var-github !important; }
+%gitlab-icon:before { @extend %icon; content: $fa-var-gitlab !important; }
+%linkedin-icon:before { @extend %icon; content: $fa-var-linkedin !important; }

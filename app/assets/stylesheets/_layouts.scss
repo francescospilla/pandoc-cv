@@ -1,0 +1,35 @@
+/* default grid value */
+$gutter-size: 20px;
+$total-columns: 12;
+
+/* layouts settings */
+$sm-layout-min:     30em; // (480px)
+
+$md-layout-min:     48em; // (768px)
+
+$lg-layout-min:     56.25em; // (900px)
+
+
+$neat-grid: (
+  columns: $total-columns,
+  gutter: $gutter-size,
+  media: 'screen, print, projection',
+);
+
+$neat-grid-sm: (
+  columns: $total-columns,
+  gutter: $gutter-size,
+  media: 'screen and (min-width: ' + $sm-layout-min + '), print, projection',
+);
+
+$neat-grid-md: (
+  columns: $total-columns,
+  gutter: $gutter-size,
+  media: 'screen and (min-width: ' + $md-layout-min + '), print, projection',
+);
+
+$neat-grid-lg: (
+  columns: $total-columns,
+  gutter: $gutter-size,
+  media: 'screen and (min-width: ' + $lg-layout-min + '), print, projection',
+);

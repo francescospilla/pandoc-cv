@@ -1,0 +1,49 @@
+{
+  "name": "pandoc-cv",
+  "version": "2.0.0",
+  "description": "An example project with Gulp using Bourbon and Neat",
+  "homepage": "https://github.com/francescospilla/pandoc-cv",
+  "keywords": [
+    "curriculum vitae",
+    "cv",
+    "resume",
+    "gulp",
+    "pandoc"
+  ],
+  "main": "gulpfile.babel.js",
+  "scripts": {
+    "start": "gulp",
+    "make-scaffolds": "gulp scaffolds"
+  },
+  "author": "francesco.spilla@gmail.com",
+  "bugs": "https://github.com/francescospilla/pandoc-cv/issues",
+  "contributors": [
+    "francesco.spilla@gmail.com"
+  ],
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "gulp": "^4.0.0"
+  },
+  "dependencies": {
+    "bourbon": "^5.1.0",
+    "bourbon-neat": "^3.0.0",
+    "browser-sync": "^2.26.3",
+    "file-exists": "^5.0.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-pandoc": "^0.2.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "merge": "^1.2.1",
+    "moment": "^2.23.0",
+    "path": "^0.12.7",
+    "path-exists": "^3.0.0",
+    "pdc": "^0.2.3",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

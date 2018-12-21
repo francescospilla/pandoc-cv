@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+$for(author-meta)$
+  <meta name="author" content="$author-meta$">
+$endfor$
+$if(date-meta)$
+  <meta name="dcterms.date" content="$date-meta$">
+$endif$
+$if(keywords)$
+<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+$if(quotes)$
+  <style type="text/css">
+    q { quotes: "“" "”" "‘" "’"; }
+  </style>
+$endif$
+$for(css)$
+  <link rel="stylesheet" href="$css$">
+$endfor$
+$if(math)$
+  $math$
+$endif$
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+<body>
+  <header itemscope itemtype="http://schema.org/Person">
+    $if(picture)$
+    $if(settings.protect-picture)$
+    $if(privatecv)$
+    <img id="picture" src="$picture$" />
+    $endif$
+    $else$
+    <img id="picture" src="$picture$" />   
+    $endif$
+    $endif$
+    <div id="header" class="$if(picture)$$if(settings.protect-picture)$$if(privatecv)$with-picture$endif$$else$with-picture$endif$$endif$">
+      <div class="header-collapse">
+        <div id="title">
+          <h1 class="fullname">
+            <span itemprop="givenName">$firstname$</span>
+            <span itemprop="familyName">$lastname$</span>
+          </h1>
+          <h2 class="title">$title$</h2>
+        </div>
+        $if(qrcode)$
+        $if(settings.protect-qrcode)$
+        $if(privatecv)$
+        <img id="qrcode" src="$qrcode$" />
+        $endif$
+        $else$
+        <img id="qrcode" src="$qrcode$" />   
+        $endif$
+        $endif$
+        </div>
+      <div class="header-collapse">
+        <ul class="contacts">
+          <!-- phone -->
+          $if(phone)$
+          $if(settings.protect-phone)$
+          $if(privatecv)$
+          <li><a class='phone' href="phoneto:$phone$">$phone$</a></li>
+          $endif$
+          $else$
+          <li><a class='phone' href="phoneto:$phone$">$phone$</a></li>
+          $endif$
+          $endif$
+          <!-- mobile -->
+          $if(mobile)$
+          $if(settings.protect-mobile)$
+          $if(privatecv)$
+          <li><a class='mobile' href="phoneto:$mobile$">$mobile$</a></li>
+          $endif$
+          $else$
+          <li><a class='mobile' href="phoneto:$mobile$">$mobile$</a></li>
+          $endif$
+          $endif$
+          <!-- fax -->
+          $if(fax)$
+          $if(settings.protect-fax)$
+          $if(privatecv)$
+          <li><a class='fax' href="phoneto:$fax$">$fax$</a></li>
+          $endif$
+          $else$
+          <li><a class='fax' href="phoneto:$fax$">$fax$</a></li>
+          $endif$
+          $endif$
+          <!-- email -->
+          $if(email)$
+          $if(settings.protect-email)$
+          $if(privatecv)$
+          <li><a href="mailto:$email$">$email$</a></li>
+          $endif$
+          $else$
+          <li><a href="mailto:$email$">$email$</a></li>
+          $endif$
+          $endif$
+          <!-- homepage -->
+          $if(homepage)$
+          <li><a class="homepage" href="$homepage$" itemprop="url" title="homepage">$homepage$</a></li>
+          $endif$
+          <!-- gitlab -->
+          $if(gitlab)$
+          <li><a href="$gitlab$" itemprop="url" title="gitlab">$gitlab$</a></li>
+          $endif$
+        </ul>
+        <ul class="details">
+          <!-- birthdetails -->
+          $if(birthdetails)$
+          $if(settings.protect-birthdetails)$
+          $if(privatecv)$
+          <li class="birthday">
+            Nato a <span itemprop="birthPlace" itemscope itemtype="http://schema.org/birthPlace">$birthdetails.place$</span>
+            il <span itemprop="birthDate" itemscope itemtype="http://schema.org/birthDate">$birthdetails.date$</span>
+          </li>
+          $endif$
+          $else$
+          <li class="birthday">
+            Nato a <span itemprop="birthPlace" itemscope itemtype="http://schema.org/birthPlace">$birthdetails.place$</span>
+            il <span itemprop="birthDate" itemscope itemtype="http://schema.org/birthDate">$birthdetails.date$</span>
+          </li>
+          $endif$
+          $endif$           
+          <!--if(address)-->
+          $if(address)$
+          $if(settings.protect-address)$
+          $if(privatecv)$
+          <li class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+            Residente in
+            $if(address.street)$
+            <span itemprop="streetAddress">$address.street$</span>
+            $endif$
+            $if(address.city)$
+            &mdash;
+            $endif$
+            $if(address.postalcode)$
+            <span itemprop="postalCode">$address.postalcode$</span>            
+            $endif$
+            $if(address.city)$
+            <span itemprop="addressLocality">$address.city$,</span>
+            $endif$
+            $if(address.country)$
+            <span itemprop="addressCountry">$address.country$</span>
+            $endif$
+          </li>
+          $endif$
+          $else$
+          <li class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+            Residente in
+            $if(address.street)$
+            <span itemprop="streetAddress">$address.street$,</span>
+            $endif$
+            $if(address.city)$
+            <span itemprop="addressLocality">$address.city$,</span>
+            $endif$
+            $if(address.country)$
+            <span itemprop="addressCountry">$address.country$</span>
+            $endif$
+          </li>
+          $endif$
+          $endif$
+          <!--endif-->
+        </ul>
+      </div>
+    </div>
+  </header>
+  <main>
+
+  $for(include-before)$
+  $include-before$
+  $endfor$
+
+  $body$
+
+  $for(include-after)$
+  $include-after$
+  $endfor$
+  
+  </main>
+  <footer>
+    $footer$
+    $if(settings.display-lastupdate)$
+    <p class="date">Aggiornato il $date$. Versione costantemente aggiornata all'indirizzo <a class="resume" href="$resume$">$resume$</a>.</p>
+    $endif$
+  </footer>
+</body>
+</html>
