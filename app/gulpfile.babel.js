@@ -7,12 +7,11 @@ import rename from 'gulp-rename';
 import sass from 'gulp-sass';
 
 import del from 'del';
-import merge from 'merge';
 import path from 'path';
 import exists from 'path-exists';
 
-import { replaceExt, error } from './utils.js';
-import { build_base_args, build_public_args, build_private_args } from './pandoc_args.js';
+import { replaceExt, error } from './assets/gulp-js/utils.js';
+import { build_opts, build_base_args, build_public_args, build_private_args } from './assets/gulp-js/pandoc_args.js';
 
 const browserSync = require('browser-sync').create(),
       bourbon     = require('bourbon').includePaths,
@@ -23,30 +22,23 @@ var variables = {
 };
 
 var paths = {
-    scaffolds: './scaffolds/**/*',
+    scaffolds: './assets/scaffolds/**/*',
     template: './assets/templates/cv.' + variables.locale + '.html',
     fonts: './assets/fonts/**/*',
     scss: './assets/stylesheets/**/*',
     assets: './assets/',
-    build: './tmp/',
-    source: '../source/',
-    output: '../output/'
+    build: './build/',
+    source: './source/',
+    output: './output/'
 };
 
 const pandoc_base_args = build_base_args(paths, variables);
 const pandoc_public_args = build_public_args(paths, pandoc_base_args);
-const pandoc_private_args = build_public_args(paths, pandoc_base_args);
+const pandoc_private_args = build_private_args(paths, pandoc_base_args);
 
 function __pandoc(filepath, args, dest, renameFunc) {
-    var opts = {
-      from: 'markdown+smart+yaml_metadata_block+header_attributes+definition_lists-table_captions',
-      to: 'html5',
-      ext: '.html',
-      args: args
-    };
-
     return gulp.src(filepath)
-               .pipe(pandoc(opts))
+               .pipe(pandoc(build_opts(args)))
                .pipe(rename(renameFunc()))
                .pipe(gulp.dest(dest));
 }
@@ -60,12 +52,19 @@ function __build_html(renamepath, args) {
     return __pandoc(path.join(paths.source, "cv.md"), args, paths.output, () => renamepath);
 }
 
+async function clean_build() {
+    const cleaned = await del([
+        path.join(paths.build, "/**")
+    ]);
+}
+
 async function clean() {
     const cleaned = await del([
         path.join(paths.build, "/**"),
         path.join(paths.output, "/**")
-    ], {force: true});
-    console.log("Cleaning leftovers...\n\t" + cleaned.join('\n\t'));
+    ]);
+    if (cleaned.length > 0)
+        console.log("Cleaning leftovers...\n\t" + cleaned.join('\n\t'));
 }
 
 function scaffolds() {
@@ -94,13 +93,12 @@ function scss() {
     .pipe(gulp.dest(path.join(paths.output, '/css')));
   };
 
-function build_blocks() {
-  var beforePublic  = __build_block("before-body-public.md");
-  var beforePrivate = __build_block("before-body-private.md");
-  var afterPublic   = __build_block("after-body-public.md");
-  var afterPrivate  = __build_block("after-body-private.md");
-
-  return merge(beforePublic, beforePrivate, afterPublic, afterPrivate);
+function build_blocks(done) {
+  __build_block("before-body-public.md");
+  __build_block("before-body-private.md");
+  __build_block("after-body-public.md");
+  __build_block("after-body-private.md");
+  return done();
 };
 
 function html_public() { return __build_html('public.html', pandoc_public_args)};
@@ -122,16 +120,16 @@ function connect() {
 }
 
 function check_source(done) {
-    done(exists.sync(paths.source) ? null : error("'" + paths.source + '" not found, did you run the "docker-compose run node make_scaffolds" yet?'));
+    done(exists.sync(paths.source) ? null : error("'" + paths.source + '" not found, did you run the "docker-compose run gulp make_scaffolds" yet?'));
 }
 
-const html = series(parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private));
+const html = series(parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private), clean_build);
 
 const make_scaffolds = series(scaffolds);
 const make_html = series(clean, check_source, html);
 const start = series(clean, check_source, parallel(html, watch, connect));
 
-export { start as default,
+export { start,
          clean,
          make_scaffolds,
          make_html

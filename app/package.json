@@ -34,18 +34,12 @@
     "bourbon-neat": "^3.0.0",
     "browser-sync": "^2.26.3",
     "del": "^3.0.0",
-    "file-exists": "^5.0.1",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-pandoc": "^0.2.2",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.4",
-    "merge": "^1.2.1",
     "moment": "^2.23.0",
-    "paint-console": "0.0.1",
-    "path": "^0.12.7",
     "path-exists": "^3.0.0",
-    "pdc": "^0.2.3",
-    "vinyl-source-stream": "^2.0.0"
+    "tmp": "0.0.33"
   }
 }

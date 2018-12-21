@@ -1,7 +1,6 @@
 version: '3'
 services:
-    node:
+    gulp:
       build: .
       volumes:
         - ./app:/home/node/app
-        - ./output:/home/node/output

@@ -14,12 +14,13 @@ RUN npm install gulp-cli -g
 USER node
 
 COPY app/package.json      /home/node/
-COPY app/babel.config.js   /home/node/
-COPY app/gulpfile.babel.js /home/node/
+COPY app/package-lock.json /home/node/
 
 WORKDIR /home/node
 
 RUN npm install
 
-ENTRYPOINT ["npm", "run-script"]
-CMD ["start"]
+COPY app/babel.config.js   /home/node/
+COPY app/gulpfile.babel.js /home/node/
+
+ENTRYPOINT ["gulp", "--gulpfile", "app/gulpfile.babel.js"]
