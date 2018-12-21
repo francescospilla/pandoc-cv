@@ -2,5 +2,6 @@ version: '3'
 services:
     gulp:
       build: .
+      pid: host
       volumes:
         - ./app:/home/node/app
