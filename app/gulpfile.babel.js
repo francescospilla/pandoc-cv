@@ -6,6 +6,7 @@ import pandoc from 'gulp-pandoc';
 import rename from 'gulp-rename';
 import sass from 'gulp-sass';
 
+import del from 'del';
 import exists from 'path-exists';
 import merge from 'merge';
 import moment from 'moment';
@@ -35,6 +36,12 @@ const replaceExt = function (fullPath, newExt) {
     var parsed = path.parse(fullPath);
     var newFullPath = path.join(parsed.root, parsed.dir, parsed.name + newExt);
     return newFullPath;
+}
+
+const error = function (msg) {
+    var err = new Error(msg);
+    err.showStack = false;
+    return err;
 }
 
 function __include_block_html(filename, args, optionName){
@@ -73,6 +80,14 @@ function __build_block(filename) {
 
 function __build_html(renamepath, args) {
     return __pandoc(path.join(paths.source, "cv.md"), args, paths.output, () => renamepath);
+}
+
+async function clean() {
+    const cleaned = await del([
+        path.join(paths.build, "/**"),
+        path.join(paths.output, "/**")
+    ], {force: true});
+    console.log("Cleaning leftovers...\n\t" + cleaned.join('\n\t'));
 }
 
 function scaffolds() {
@@ -128,11 +143,22 @@ function connect() {
     });
 }
 
-const html = series(parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private));
-const start = parallel(html, watch, connect);
+function check_source(done) {
+    done(exists.sync(paths.source) ? null : error("'" + paths.source + '" not found, did you run the "docker-compose run node make-scaffolds" yet?'));
+}
+
+const html = series(check_source, parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private));
+const start = series(clean, check_source, parallel(html, watch, connect));
 
 export { start as default,
          start,
+         clean,
          scaffolds,
-         html
+         html,
+         build_blocks,
+         scss,
+         copy_assets,
+         copy_images,
+         html_public,
+         html_private
        };
