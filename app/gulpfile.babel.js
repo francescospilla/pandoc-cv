@@ -7,6 +7,7 @@ import rename from 'gulp-rename';
 import sass from 'gulp-sass';
 
 import del from 'del';
+import moment from 'moment';
 import path from 'path';
 import exists from 'path-exists';
 
@@ -53,7 +54,7 @@ function __build_html(renamepath, args) {
 }
 
 async function clean_build() {
-    const cleaned = await del([
+    await del([
         path.join(paths.build, "/**")
     ]);
 }
@@ -68,6 +69,14 @@ async function clean() {
 }
 
 function scaffolds() {
+    if (exists.sync(paths.source)){
+        var backup_path = path.resolve(paths.source) + "_" + new Date().getTime().toString();
+        console.log("The '" + paths.source + "' folder already exists, renamining it '" + backup_path + "' for backup");
+
+        gulp.src(paths.source)
+            .pipe(gulp.dest(backup_path));
+    }
+
     return gulp.src(paths.scaffolds)
                .pipe(gulp.dest(paths.source));
 };
