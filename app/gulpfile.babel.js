@@ -7,11 +7,10 @@ import rename from 'gulp-rename';
 import sass from 'gulp-sass';
 
 import del from 'del';
-import moment from 'moment';
 import path from 'path';
 import exists from 'path-exists';
 
-import { replaceExt, error } from './assets/gulp-js/utils.js';
+import { log, error_notrace, replaceExt } from './assets/gulp-js/utils.js';
 import { build_opts, build_base_args, build_public_args, build_private_args } from './assets/gulp-js/pandoc_args.js';
 
 const browserSync = require('browser-sync').create(),
@@ -32,6 +31,8 @@ var paths = {
     source: './source/',
     output: './output/'
 };
+
+
 
 const pandoc_base_args = build_base_args(paths, variables);
 const pandoc_public_args = build_public_args(paths, pandoc_base_args);
@@ -65,13 +66,15 @@ async function clean() {
         path.join(paths.output, "/**")
     ]);
     if (cleaned.length > 0)
-        console.log("Cleaning leftovers...\n\t" + cleaned.join('\n\t'));
+        log.info("Cleaning leftovers...\n\t" + cleaned.join('\n\t'));
+    else
+        log.info("Nothing to clean");
 }
 
 function scaffolds() {
     if (exists.sync(paths.source)){
         var backup_path = path.resolve(paths.source) + "_" + new Date().getTime().toString();
-        console.log("The '" + paths.source + "' folder already exists, renamining it '" + backup_path + "' for backup");
+        log.warn("The '" + paths.source + "' folder already exists, renamining it '" + backup_path + "' for backup");
 
         gulp.src(paths.source)
             .pipe(gulp.dest(backup_path));
@@ -129,7 +132,7 @@ function connect() {
 }
 
 function check_source(done) {
-    done(exists.sync(paths.source) ? null : error("'" + paths.source + '" not found, did you run the "docker-compose run gulp make_scaffolds" yet?'));
+    done(exists.sync(paths.source) ? null : error_notrace("'" + paths.source + '" not found, did you run the "docker-compose run gulp make_scaffolds" yet?'));
 }
 
 const html = series(parallel(build_blocks, scss, copy_images, copy_assets), parallel(html_public, html_private), clean_build);
