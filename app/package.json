@@ -40,6 +40,7 @@
     "gulp-pandoc": "^0.2.2",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
+    "merge": "^1.2.1",
     "moment": "^2.23.0",
     "path-exists": "^3.0.0"
   }

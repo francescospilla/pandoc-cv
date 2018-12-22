@@ -1,4 +1,4 @@
 app/tmp
-app/source
+app/source*
 app/output
 app/node_modules
