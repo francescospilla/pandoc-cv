@@ -23,7 +23,7 @@ const error_notrace = function (msg) {
 
 const log = {
     info: (msg) => fancy_log(chalk_levels.info(msg)),
-    warn: (msg) => fancy_log("Warning: "  + chalk_levels.warn(msg)),
+    warn: (msg) => fancy_log("Warning: " + chalk_levels.warn(msg)),
     error: (msg) => fancy_log("Error: " + chalk_levels.error(msg))
 };
 

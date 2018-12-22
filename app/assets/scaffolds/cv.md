@@ -37,12 +37,12 @@ Education
 year-year
 : **Degree**, *Institution*, City, Country. \
   What awesome things did you do... Or ***anything you want***
-    
+
 
 year-year
 : **Degree**, *Institution*, City, Country \
   in Grade
-    
+
 Awards and Grants
 -----------------
 

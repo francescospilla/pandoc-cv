@@ -15,11 +15,11 @@ import { log, error_notrace, replaceExt } from './assets/gulp-js/utils.js';
 import { build_opts, build_base_args, build_public_args, build_private_args } from './assets/gulp-js/pandoc_args.js';
 
 const browserSync = require('browser-sync').create(),
-      bourbon     = require('bourbon').includePaths,
-      neat        = require('bourbon-neat').includePaths;
+    bourbon = require('bourbon').includePaths,
+    neat = require('bourbon-neat').includePaths;
 
 var variables = {
-    locale : 'en',
+    locale: 'en',
 };
 
 var paths = {
@@ -40,15 +40,15 @@ const pandoc_private_args = build_private_args(paths, pandoc_base_args);
 
 function __pandoc(filepath, args, dest, renameFunc) {
     return gulp.src(filepath)
-               .pipe(pandoc(build_opts(args)))
-               .pipe(rename(renameFunc()))
-               .pipe(gulp.dest(dest))
-               .pipe(browserSync.stream());
+        .pipe(pandoc(build_opts(args)))
+        .pipe(rename(renameFunc()))
+        .pipe(gulp.dest(dest))
+        .pipe(browserSync.stream());
 }
 
 function __build_block(filename) {
     if (exists.sync(path.join(paths.source, filename)))
-    return __pandoc(path.join(paths.source, filename), ['--section-divs'], paths.build, () => replaceExt(filename, '.html'));
+        return __pandoc(path.join(paths.source, filename), ['--section-divs'], paths.build, () => replaceExt(filename, '.html'));
 }
 
 function __build_html(renamepath, args) {
@@ -73,7 +73,7 @@ async function clean() {
 }
 
 function scaffolds() {
-    if (exists.sync(paths.source)){
+    if (exists.sync(paths.source)) {
         var backup_path = path.resolve(paths.source) + "_" + new Date().getTime().toString();
         log.warn("The '" + paths.source + "' folder already exists, renamining it '" + backup_path + "' for backup");
 
@@ -82,44 +82,44 @@ function scaffolds() {
     }
 
     return gulp.src(paths.scaffolds)
-               .pipe(gulp.dest(paths.source));
+        .pipe(gulp.dest(paths.source));
 };
 
 function copy_fonts() {
-    return gulp.src(paths.fonts, {base: paths.assets})
-           .pipe(gulp.dest(paths.output))
-           .pipe(browserSync.stream());
-  };
+    return gulp.src(paths.fonts, { base: paths.assets })
+        .pipe(gulp.dest(paths.output))
+        .pipe(browserSync.stream());
+};
 
 function copy_images() {
-    return gulp.src(path.join(paths.source, "/images/**/*"), {base: paths.source})
-           .pipe(gulp.dest(paths.output))
-           .pipe(browserSync.stream());
-  };
+    return gulp.src(path.join(paths.source, "/images/**/*"), { base: paths.source })
+        .pipe(gulp.dest(paths.output))
+        .pipe(browserSync.stream());
+};
 
 function scss() {
     return gulp.src(paths.scss)
-    .pipe(sass({
-        sourcemaps: true,
-        includePaths: [bourbon, neat]
-    }))
-    .pipe(autoprefixer('last 2 versions'))
-    .pipe(rename({dirname: ''}))
-    .pipe(gulp.dest(path.join(paths.output, '/css')))
-    .pipe(browserSync.stream());
-  };
-
-function build_blocks() {
-  var bbpubl = __build_block("before-body-public.md");
-  var bbpriv = __build_block("before-body-private.md");
-  var abpubl = __build_block("after-body-public.md");
-  var abpriv = __build_block("after-body-private.md");
-
-  return merge(bbpubl, bbpriv, abpubl, abpriv);
+        .pipe(sass({
+            sourcemaps: true,
+            includePaths: [bourbon, neat]
+        }))
+        .pipe(autoprefixer('last 2 versions'))
+        .pipe(rename({ dirname: '' }))
+        .pipe(gulp.dest(path.join(paths.output, '/css')))
+        .pipe(browserSync.stream());
 };
 
-function html_public() { return __build_html('public.html', pandoc_public_args)};
-function html_private() { return __build_html('private.html', pandoc_private_args)};
+function build_blocks() {
+    var bbpubl = __build_block("before-body-public.md");
+    var bbpriv = __build_block("before-body-private.md");
+    var abpubl = __build_block("after-body-public.md");
+    var abpriv = __build_block("after-body-private.md");
+
+    return merge(bbpubl, bbpriv, abpubl, abpriv);
+};
+
+function html_public() { return __build_html('public.html', pandoc_public_args) };
+function html_private() { return __build_html('private.html', pandoc_private_args) };
 
 function watch() {
     gulp.watch(paths.scss, scss);
@@ -150,8 +150,9 @@ const make_scaffolds = series(scaffolds);
 const make_html = series(clean, check_source, parallel(scss, copy_images, copy_fonts), html);
 const start = series(make_html, parallel(watch, connect));
 
-export { start,
-         clean,
-         make_scaffolds,
-         make_html
-       };
+export {
+    start,
+    clean,
+    make_scaffolds,
+    make_html
+};

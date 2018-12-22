@@ -1,44 +1,64 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$" $if(dir)$ dir="$dir$" $endif$>
+
 <head>
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-$for(author-meta)$
+  $for(author-meta)$
   <meta name="author" content="$author-meta$">
-$endfor$
-$if(date-meta)$
+  $endfor$
+  $if(date-meta)$
   <meta name="dcterms.date" content="$date-meta$">
-$endif$
-$if(keywords)$
-<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
-$endif$
+  $endif$
+  $if(keywords)$
+  <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+  $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
   <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.line-block{white-space: pre-line;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.line-block {
+      white-space: pre-line;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
   </style>
-$if(quotes)$
+  $if(quotes)$
   <style type="text/css">
-    q { quotes: "“" "”" "‘" "’"; }
+    q {
+      quotes: "“""”""‘""’";
+    }
   </style>
-$endif$
-$for(css)$
+  $endif$
+  $for(css)$
   <link rel="stylesheet" href="$css$">
-$endfor$
-$if(math)$
+  $endfor$
+  $if(math)$
   $math$
-$endif$
+  $endif$
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-$for(header-includes)$
+  $for(header-includes)$
   $header-includes$
-$endfor$
+  $endfor$
 </head>
+
 <body>
   <header itemscope itemtype="http://schema.org/Person">
     $if(picture)$
@@ -47,7 +67,7 @@ $endfor$
     <img id="picture" src="$picture$" />
     $endif$
     $else$
-    <img id="picture" src="$picture$" />   
+    <img id="picture" src="$picture$" />
     $endif$
     $endif$
     <div id="header" class="$if(picture)$$if(settings.protect-picture)$$if(privatecv)$with-picture$endif$$else$with-picture$endif$$endif$">
@@ -65,10 +85,10 @@ $endfor$
         <img id="qrcode" src="$qrcode$" />
         $endif$
         $else$
-        <img id="qrcode" src="$qrcode$" />   
+        <img id="qrcode" src="$qrcode$" />
         $endif$
         $endif$
-        </div>
+      </div>
       <div class="header-collapse">
         <ul class="contacts">
           <!-- phone -->
@@ -136,7 +156,7 @@ $endfor$
             in <span itemprop="birthPlace" itemscope itemtype="http://schema.org/birthPlace">$birthdetails.place$</span>
           </li>
           $endif$
-          $endif$           
+          $endif$
           <!--if(address)-->
           $if(address)$
           $if(settings.protect-address)$
@@ -149,7 +169,7 @@ $endfor$
             &mdash;
             $endif$
             $if(address.postalcode)$
-            <span itemprop="postalCode">$address.postalcode$</span>            
+            <span itemprop="postalCode">$address.postalcode$</span>
             $endif$
             $if(address.city)$
             <span itemprop="addressLocality">$address.city$,</span>
@@ -180,16 +200,16 @@ $endfor$
   </header>
   <main>
 
-  $for(include-before)$
-  $include-before$
-  $endfor$
+    $for(include-before)$
+    $include-before$
+    $endfor$
 
-  $body$
+    $body$
 
-  $for(include-after)$
-  $include-after$
-  $endfor$
-  
+    $for(include-after)$
+    $include-after$
+    $endfor$
+
   </main>
   <footer>
     $footer$
@@ -198,4 +218,5 @@ $endfor$
     $endif$
   </footer>
 </body>
+
 </html>
