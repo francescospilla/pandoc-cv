@@ -77,7 +77,7 @@ async function clean_build() {
     ]);
 }
 
-async function clean() {
+async function clean_all() {
     const cleaned = await del([
         path.join(paths.build, "/**"),
         path.join(paths.output, "/**")
@@ -86,9 +86,9 @@ async function clean() {
         log.info("Cleaning leftovers...\n\t" + cleaned.join('\n\t'));
     else
         log.info("Nothing to clean");
-}
+};
 
-function scaffolds() {
+function make_scaffolds() {
     if (exists.sync(paths.source)) {
         var backup_path = path.resolve(paths.source) + "_" + new Date().getTime().toString();
         log.warn("The '" + paths.source + "' folder already exists, renamining it '" + backup_path + "' for backup");
@@ -166,14 +166,13 @@ function check_source(done) {
 const build_html = series(build_blocks, parallel(html_public, html_private), clean_build);
 const build_pdf = parallel(pdf_public, pdf_private);
 
-const make_scaffolds = series(scaffolds);
-const make_html = series(clean, check_source, parallel(scss, copy_images, copy_fonts), build_html);
+const make_html = series(clean_all, check_source, parallel(scss, copy_images, copy_fonts), build_html);
 const make_pdf = series(make_html, build_pdf);
 const start = series(make_html, parallel(watch, connect));
 
 export {
     start,
-    clean,
+    clean_all as clean,
     make_scaffolds,
     make_html,
     make_pdf
