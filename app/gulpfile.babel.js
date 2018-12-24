@@ -93,7 +93,7 @@ function scaffolds() {
         var backup_path = path.resolve(paths.source) + "_" + new Date().getTime().toString();
         log.warn("The '" + paths.source + "' folder already exists, renamining it '" + backup_path + "' for backup");
 
-        gulp.src(paths.source)
+        gulp.src(path.join(paths.source, "/**/*"))
             .pipe(gulp.dest(backup_path));
     }
 
@@ -144,7 +144,7 @@ function watch() {
     gulp.watch(paths.scss, scss);
     gulp.watch(paths.fonts, copy_fonts);
     gulp.watch(path.join(paths.source, "*.md"), build_html);
-    gulp.watch(paths.template, html);
+    gulp.watch(paths.template, build_html);
     gulp.watch(path.join(paths.source, "/images/*"), copy_images);
 };
 
