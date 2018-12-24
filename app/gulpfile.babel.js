@@ -10,9 +10,10 @@ import del from 'del';
 import merge from 'merge';
 import path from 'path';
 import exists from 'path-exists';
+import puppeteer from 'puppeteer-core';
 
 import { log, error_notrace, replaceExt } from './assets/gulp-js/utils.js';
-import { build_opts, build_base_args, build_public_args, build_private_args } from './assets/gulp-js/pandoc_args.js';
+import { build_html_opts, build_base_args, build_public_args, build_private_args } from './assets/gulp-js/pandoc_args.js';
 
 const browserSync = require('browser-sync').create(),
     bourbon = require('bourbon').includePaths,
@@ -26,7 +27,7 @@ var paths = {
     scaffolds: './assets/scaffolds/**/*',
     template: './assets/templates/cv.' + variables.locale + '.html',
     fonts: './assets/fonts/**/*',
-    scss: './assets/stylesheets/**/*',
+    scss: './assets/stylesheets/**/*.scss',
 
     assets: './assets/',
     build: './build/',
@@ -40,10 +41,21 @@ const pandoc_private_args = build_private_args(paths, pandoc_base_args);
 
 function __pandoc(filepath, args, dest, renameFunc) {
     return gulp.src(filepath)
-        .pipe(pandoc(build_opts(args)))
+        .pipe(pandoc(build_html_opts(args)))
         .pipe(rename(renameFunc()))
         .pipe(gulp.dest(dest))
         .pipe(browserSync.stream());
+}
+
+function __puppeteer(filepath) {
+    return (async () => {
+        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--disable-gpu'] });
+        const page = await browser.newPage();
+        await page.goto('file://' + path.resolve(filepath), { waitUntil: 'networkidle2' });
+        await page.pdf({ path: replaceExt(filepath, '.pdf'), format: 'A4', printBackground: true });
+
+        await browser.close();
+    })();
 }
 
 function __build_block(filename) {
@@ -53,6 +65,10 @@ function __build_block(filename) {
 
 function __build_html(renamepath, args) {
     return __pandoc(path.join(paths.source, "cv.md"), args, paths.output, () => renamepath);
+}
+
+function __build_pdf(filename) {
+    return __puppeteer(path.join(paths.output, filename));
 }
 
 async function clean_build() {
@@ -121,10 +137,13 @@ function build_blocks() {
 function html_public() { return __build_html('public.html', pandoc_public_args) };
 function html_private() { return __build_html('private.html', pandoc_private_args) };
 
+function pdf_public() { return __build_pdf('public.html') };
+function pdf_private() { return __build_pdf('private.html') };
+
 function watch() {
     gulp.watch(paths.scss, scss);
     gulp.watch(paths.fonts, copy_fonts);
-    gulp.watch(path.join(paths.source, "*.md"), html);
+    gulp.watch(path.join(paths.source, "*.md"), build_html);
     gulp.watch(paths.template, html);
     gulp.watch(path.join(paths.source, "/images/*"), copy_images);
 };
@@ -144,15 +163,18 @@ function check_source(done) {
     done(exists.sync(paths.source) ? null : error_notrace("'" + paths.source + '" not found, did you run the "docker-compose run gulp make_scaffolds" yet?'));
 }
 
-const html = series(build_blocks, parallel(html_public, html_private), clean_build);
+const build_html = series(build_blocks, parallel(html_public, html_private), clean_build);
+const build_pdf = parallel(pdf_public, pdf_private);
 
 const make_scaffolds = series(scaffolds);
-const make_html = series(clean, check_source, parallel(scss, copy_images, copy_fonts), html);
+const make_html = series(clean, check_source, parallel(scss, copy_images, copy_fonts), build_html);
+const make_pdf = series(make_html, build_pdf);
 const start = series(make_html, parallel(watch, connect));
 
 export {
     start,
     clean,
     make_scaffolds,
-    make_html
+    make_html,
+    make_pdf
 };

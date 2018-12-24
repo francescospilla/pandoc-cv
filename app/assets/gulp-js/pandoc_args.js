@@ -9,7 +9,7 @@ function __include_block_html(paths, filename, args, optionName) {
         args.push('--' + optionName + '=' + replaceExt(path.join(paths.build, filename), '.html'));
 }
 
-function build_opts(args) {
+function build_html_opts(args) {
     return {
         from: 'markdown+smart+yaml_metadata_block+header_attributes+definition_lists-table_captions',
         to: 'html5',
@@ -40,4 +40,4 @@ function build_private_args(paths, base_args) {
     return private_args;
 }
 
-export { build_opts, build_base_args, build_public_args, build_private_args };
+export { build_html_opts, build_base_args, build_public_args, build_private_args };

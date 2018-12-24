@@ -1,6 +1,6 @@
 version: '3'
 services:
-    gulp:
+    gulp_stretch:
       build: .
       pid: host
       volumes:
