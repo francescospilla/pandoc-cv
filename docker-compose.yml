@@ -1,7 +1,8 @@
 version: '3'
 services:
-    gulp_stretch:
+    gulp:
       build: .
+      image: pandoc_cv_stretch
       pid: host
       volumes:
         - ./app:/home/node/app

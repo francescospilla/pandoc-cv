@@ -42,6 +42,6 @@
     "merge": "^1.2.1",
     "moment": "^2.23.0",
     "path-exists": "^3.0.0",
-    "puppeteer-core": "^1.11.0"
+    "puppeteer": "^1.11.0"
   }
 }

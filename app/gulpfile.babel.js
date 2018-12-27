@@ -10,7 +10,7 @@ import del from 'del';
 import merge from 'merge';
 import path from 'path';
 import exists from 'path-exists';
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 
 import { log, error_notrace, replaceExt } from './assets/gulp-js/utils.js';
 import { build_html_opts, build_base_args, build_public_args, build_private_args } from './assets/gulp-js/pandoc_args.js';
@@ -47,15 +47,13 @@ function __pandoc(filepath, args, dest, renameFunc) {
         .pipe(browserSync.stream());
 }
 
-function __puppeteer(filepath) {
-    return (async () => {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--disable-gpu'] });
-        const page = await browser.newPage();
-        await page.goto('file://' + path.resolve(filepath), { waitUntil: 'networkidle2' });
-        await page.pdf({ path: replaceExt(filepath, '.pdf'), format: 'A4', printBackground: true });
+async function __puppeteer(filepath) {
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--disable-gpu'] });
+    const page = await browser.newPage();
+    await page.goto('file://' + path.resolve(filepath), { waitUntil: 'networkidle2' });
+    await page.pdf({ path: replaceExt(filepath, '.pdf'), format: 'A4', printBackground: true });
 
-        await browser.close();
-    })();
+    await browser.close();
 }
 
 function __build_block(filename) {
