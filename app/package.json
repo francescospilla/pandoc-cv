@@ -10,11 +10,6 @@
     "gulp",
     "pandoc"
   ],
-  "main": "gulpfile.babel.js",
-  "scripts": {
-    "start": "gulp",
-    "make-scaffolds": "gulp scaffolds"
-  },
   "author": "francesco.spilla@gmail.com",
   "bugs": "https://github.com/francescospilla/pandoc-cv/issues",
   "contributors": [
