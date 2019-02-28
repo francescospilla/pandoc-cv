@@ -7,6 +7,7 @@ picture: images/picture.svg
 qrcode: images/qrcode.svg
 resume: https://yourwebsite.tld/cv
 homepage: https://yourwebsite.tld
+github: https://github.com/yourgithub
 gitlab: https://gitlab.com/yourgitlab
 email: contact@yourwebsite.tld
 phone: '+1 (234) 567 890'
