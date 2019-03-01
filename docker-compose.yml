@@ -6,3 +6,5 @@ services:
       pid: host
       volumes:
         - ./app:/home/node/app
+      ports:
+        - 3000
